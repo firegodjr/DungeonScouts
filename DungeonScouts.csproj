@@ -42,9 +42,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Characters\Character.cs" />
-    <Compile Include="Characters\Combat\Attack.cs" />
-    <Compile Include="Characters\Combat\Spell.cs" />
+    <Compile Include="Characters\Actor.cs" />
+    <Compile Include="Characters\Combat\Attacks\AttackMagical.cs" />
+    <Compile Include="Characters\Combat\Attacks\AttackPhysical.cs" />
+    <Compile Include="Characters\Combat\IAttack.cs" />
+    <Compile Include="Characters\Combat\IEquippable.cs" />
+    <Compile Include="Characters\Combat\Weapon.cs" />
+    <Compile Include="Characters\Item.cs" />
+    <Compile Include="Map\Room.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI.cs" />

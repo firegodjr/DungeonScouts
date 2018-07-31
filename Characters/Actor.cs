@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DungeonScouts.Characters
 {
-    class Character
+    class Actor
     {
         bool living = true;
         string name;
@@ -17,16 +17,14 @@ namespace DungeonScouts.Characters
 
         int health;
         int maxHealth;
-        List<Attack> attacks = new List<Attack>();
-        List<Spell> spells = new List<Spell>();
-        List<Item> items = new List<Item>();
+        List<IAttack> attacks = new List<IAttack>();
+        List<IItem> items = new List<IItem>();
 
-        public Character(Race race, string name, string description, int maxHealth, Attack[] attacks, Spell[] spells, Item[] items)
+        public Actor(Race race, string name, string description, int maxHealth, IAttack[] attacks, IItem[] items)
         {
             this.name = name;
             this.maxHealth = maxHealth;
             this.attacks.AddRange(attacks);
-            this.spells.AddRange(spells);
             this.items.AddRange(items);
         }
 

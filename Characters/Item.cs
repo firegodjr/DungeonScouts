@@ -6,10 +6,19 @@ using System.Threading.Tasks;
 
 namespace DungeonScouts.Characters
 {
-    class Item
+    interface IItem
     {
-        string name;
-        string description;
-        int metadata;
+        string Name { get; }
+        string Description { get; }
+        Rarity Rarity { get; }
+    }
+
+    public enum Rarity
+    {
+        COMMON,
+        UNCOMMON,
+        RARE,
+        LEGENDARY,
+        EXOTIC
     }
 }
