@@ -1,18 +1,31 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DungeonScouts.Characters;
+using DungeonScouts.Drawing;
+using DungeonScouts.Map;
+using DungeonScouts.Map.Tiles;
+using DungeonScouts.Map.Tiles.TileTypes;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace DungeonScouts
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public class DungeonScouts : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        ResourceManager resources;
+
+        //TEMP
+        Room testRoom = new Room(
+            new ITile[][] {
+                new ITile[]{ new BlankTile(), new BlankTile(), new BlankTile() },
+                new ITile[] { new BlankTile(), new BlankTile(), new BlankTile() } });
         
-        public Game1()
+        public DungeonScouts()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -38,8 +51,11 @@ namespace DungeonScouts
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            resources = new ResourceManager(Content);
 
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            resources.LoadRoomTextures(testRoom);
+            resources.CreateRoomSprites(testRoom);
             // TODO: use this.Content to load your game content here
         }
 
@@ -74,6 +90,12 @@ namespace DungeonScouts
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            spriteBatch.Begin();
+
+            resources.Draw(spriteBatch);
+
+            spriteBatch.End();
 
             // TODO: Add your drawing code here
 
