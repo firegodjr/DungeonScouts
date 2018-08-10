@@ -1,5 +1,7 @@
 ﻿using DungeonScouts.Characters.Combat;
+using DungeonScouts.Drawing;
 using DungeonScouts.Map;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +43,12 @@ namespace DungeonScouts.Characters
         public void Equip(IEquippable item)
         {
             equipment.Add(item.equipSlot, item);
+        }
+
+        public Texture2D GetActorTexture(ResourceManager resources)
+        {
+            // TODO: load more than one texture :P
+            return resources.GetTexture("Actors/testActor");
         }
     }
 

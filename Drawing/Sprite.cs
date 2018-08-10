@@ -14,6 +14,7 @@ namespace DungeonScouts.Drawing
         Texture2D texture;
         string resourceName;
         Transform2D transform;
+        bool isPixelArt = true;
 
         public Sprite(Texture2D texture, int xPos = 0, int yPos = 0, int width = -1, int height = -1)
         {
@@ -39,9 +40,15 @@ namespace DungeonScouts.Drawing
         }
 
         /// <summary>
-        /// Draws the sprite using the given SpriteBatch
+        /// Draws the sprite using the given SpriteBatch and camera
         /// </summary>
         /// <param name="spriteBatch"></param>
+        public void Draw(SpriteBatch spriteBatch, CameraManager camera)
+        {
+            Transform2D offset = camera.applyCameraOffset(transform);
+            spriteBatch.Draw(texture, new Rectangle(offset.PosX, offset.PosY, offset.Width, offset.Height), Color.White);
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, new Rectangle(transform.PosX, transform.PosY, transform.Width, transform.Height), Color.White);

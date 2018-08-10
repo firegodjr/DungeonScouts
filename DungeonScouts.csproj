@@ -49,10 +49,12 @@
     <Compile Include="Characters\Combat\IEquippable.cs" />
     <Compile Include="Characters\Combat\Weapon.cs" />
     <Compile Include="Characters\IItem.cs" />
+    <Compile Include="Drawing\CameraManager.cs" />
     <Compile Include="Drawing\ResourceManager.cs" />
     <Compile Include="Drawing\Sprite.cs" />
     <Compile Include="Drawing\Transform2D.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="Drawing\WorldManager.cs" />
+    <Compile Include="DungeonScouts.cs" />
     <Compile Include="Map\Tiles\ITile.cs" />
     <Compile Include="Map\Room.cs" />
     <Compile Include="Map\Tiles\ITileTrap.cs" />

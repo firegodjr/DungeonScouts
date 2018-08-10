@@ -16,11 +16,13 @@ namespace DungeonScouts.Map
         /// <summary>
         /// All the actors that currently reside in this room
         /// </summary>
-        List<Actor> roomActors;
+        List<Actor> roomActors = new List<Actor>();
+        public List<Actor> RoomActors => roomActors;
         /// <summary>
         /// List parallel to roomActors that contains each actor's tile position
         /// </summary>
-        List<TilePosition> actorTilePositions;
+        List<TilePosition> actorTilePositions = new List<TilePosition>();
+        public List<TilePosition> ActorTilePositions => actorTilePositions;
 
         public Room(ITile[][] tiles)
         {
@@ -90,8 +92,8 @@ namespace DungeonScouts.Map
     /// </summary>
     struct TilePosition
     {
-        int x;
-        int y;
+        public int x;
+        public int y;
         public TilePosition(int x, int y)
         {
             this.x = x;

@@ -1,4 +1,5 @@
 ﻿using DungeonScouts.Characters;
+using DungeonScouts.Characters.Combat;
 using DungeonScouts.Drawing;
 using DungeonScouts.Map;
 using DungeonScouts.Map.Tiles;
@@ -6,6 +7,7 @@ using DungeonScouts.Map.Tiles.TileTypes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace DungeonScouts
@@ -18,17 +20,27 @@ namespace DungeonScouts
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         ResourceManager resources;
+        WorldManager world;
+        CameraManager camera = CameraManager.Camera;
 
         //TEMP
         Room testRoom = new Room(
             new ITile[][] {
                 new ITile[]{ new BlankTile(), new BlankTile(), new BlankTile() },
-                new ITile[] { new BlankTile(), new BlankTile(), new BlankTile() } });
+                new ITile[] { new BlankTile(), new BlankTile(), new BlankTile() },
+                new ITile[] { new BlankTile() } });
         
         public DungeonScouts()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = CameraManager.ViewWidth;
+            graphics.PreferredBackBufferHeight = CameraManager.ViewHeight;
+
             Content.RootDirectory = "Content";
+            this.Window.Title = "Dungeon Scouts";
+
+            //TEMP
+            testRoom.AddActor(new Actor(Race.HUMAN, "Test Actor", "Just a test!", 5, new IAttack[] { }, new IItem[] { }), new TilePosition(0, 0));
         }
 
         /// <summary>
@@ -40,7 +52,6 @@ namespace DungeonScouts
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
@@ -50,12 +61,17 @@ namespace DungeonScouts
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             resources = new ResourceManager(Content);
+            world = new WorldManager(camera);
 
+            //TEMP
+            resources.TextureStore.Add("Actors/testActor", Content.Load<Texture2D>("Actors/testActor"));
+
+            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             resources.LoadRoomTextures(testRoom);
-            resources.CreateRoomSprites(testRoom);
+            world.CreateRoomSprites(testRoom, resources);
+            world.CreateRoomActors(testRoom, resources);
             // TODO: use this.Content to load your game content here
         }
 
@@ -75,11 +91,16 @@ namespace DungeonScouts
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+                camera.Transform.Scale--;
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+                camera.Transform.PosX--;
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+                camera.Transform.Scale++;
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+                camera.Transform.PosX++;
 
             // TODO: Add your update logic here
-
             base.Update(gameTime);
         }
 
@@ -91,9 +112,10 @@ namespace DungeonScouts
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
+            // Begin drawing with SamplerState set to PointClamp (to preserve pixel art when scaled)
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-            resources.Draw(spriteBatch);
+            world.Draw(spriteBatch);
 
             spriteBatch.End();
 

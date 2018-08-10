@@ -11,33 +11,19 @@ using System.Threading.Tasks;
 namespace DungeonScouts.Drawing
 {
     /// <summary>
-    /// Manages all loaded resources such as textures, audio, and sprites
+    /// Manages the loading and optimization of resources such as textures and audio
     /// </summary>
     class ResourceManager
     {
         public Dictionary<string, Texture2D> TextureStore = new Dictionary<string, Texture2D>();
-        private List<SpriteGroup> spriteGroups = new List<SpriteGroup>();
         private ContentManager content;
 
-        private string MISSING_TEX_PATH = "missing";
-        private int TILE_WIDTH = 32;
-        private int TILE_HEIGHT = 16;
+        private static string MISSING_TEX_PATH = "missing";
 
         public ResourceManager(ContentManager content)
         {
             this.content = content;
             TextureStore.Add(MISSING_TEX_PATH, content.Load<Texture2D>(MISSING_TEX_PATH));
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            foreach(SpriteGroup group in spriteGroups)
-            {
-                foreach(Sprite s in group.Sprites)
-                {
-                    s.Draw(spriteBatch);
-                }
-            }
         }
 
         public Texture2D GetTexture(string key)
@@ -48,6 +34,7 @@ namespace DungeonScouts.Drawing
             }
             else
             {
+                Console.WriteLine($"TextureStore error: Cannot retrieve texture '{key}'");
                 return TextureStore[MISSING_TEX_PATH];
             }
         }
@@ -90,37 +77,6 @@ namespace DungeonScouts.Drawing
                     TextureStore.Remove(s);
                 }
             }
-        }
-
-        /// <summary>
-        /// Loads room sprites, assuming all needed textures are in the TextureStore
-        /// </summary>
-        /// <param name="room"></param>
-        public void CreateRoomSprites(Room room)
-        {
-            SpriteGroup newSpriteGroup = new SpriteGroup();
-            for(int x = 0; x < room.Tiles.Length; ++x)
-            {
-                for(int y = 0; y < room.Tiles[x].Length; ++y)
-                {
-                    int xPos = (-x + y) * TILE_WIDTH / 2;
-                    int yPos = (x + y) * TILE_HEIGHT / 2;
-                    newSpriteGroup.Sprites.Add(new Sprite(GetTexture(room.Tiles[x][y].TexturePath), xPos, yPos));
-                }
-            }
-            spriteGroups.Add(newSpriteGroup);
-        }
-
-        private class SpriteGroup
-        {
-            public enum GroupType
-            {
-                WORLD,
-                ENTITY
-            }
-
-            public GroupType type;
-            public List<Sprite> Sprites = new List<Sprite>();
         }
     }
 
